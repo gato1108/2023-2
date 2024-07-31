@@ -1,0 +1,48 @@
+\begin{enumerate}
+    \item Definimos el siguiente $\psi$:
+    \begin{align*}
+    \psi:=A\wedge\,B\wedge\,C \quad \text{donde} \left\{
+                \begin{array}{ll}
+                  A=p \lor q \lor r \lor \neg s \lor t \lor \neg v\\
+                  B=p \lor q \lor \neg r \lor s \lor t \lor \neg v\\
+                  C=p \lor q \lor \neg r \lor \neg s \lor t \lor \neg v
+                \end{array}
+              \right.
+    \end{align*}
+    Claramente $\psi$ está en CNF, por lo que basta demostrar que $\varphi \equiv \psi$. 
+    
+    Supongamos por contradicción que existe una valuación $\sigma$ tal que $\sigma(\varphi)\neq \sigma(\psi)$. Tenemos 2 casos:
+    \begin{enumerate}
+        \item \boxed{\sigma(\varphi)=0 \,\text{y} \,\sigma(\psi)=1} Notar que $\sigma(A)=\sigma(B)=\sigma(C)=1$ y $\sigma(\neg p \to \neg v)=0$, por lo que $\sigma(p)=0$ y $\sigma(v)=1$. Similarmete, de $\sigma((r\lor s)\to (q\lor t))=0$ obtenemos $\sigma(q\lor t)=0$ entonces $\sigma(q)=\sigma(t)=0$ y $\sigma(r\lor s)=1$. Si $\sigma(r)=1$, entonces, para que $B$ y $C$ sean verdad, $\sigma(s)=\sigma(\neg s)=1$, que no se puede, por lo que $\sigma(s)=1$ y $\sigma(r)=0$. Esta valuación cumple $\sigma(A)=0$. Contradicción.
+        \item \boxed{\sigma(\varphi)=1 \,\text{y} \,\sigma(\psi)=0} Hay 3 subcasos:
+        \begin{enumerate}
+            \item \underline{$\sigma(A)=0$} $\implies \sigma(p)=\sigma(q)=\sigma(r)=\sigma(t)=0$ y $\sigma(s)=\sigma(v)=1$, que cumple $\sigma(\varphi)=0$ contradicción. 
+            \item \underline{$\sigma(B)=0$} $\implies \sigma(p)=\sigma(q)=\sigma(s)=\sigma(t)=0$ y $\sigma(r)=\sigma(v)=1$, que cumple $\sigma(\varphi)=0$ contradicción. 
+            \item \underline{$\sigma(C)=0$} $\implies \sigma(p)=\sigma(q)=\sigma(t)=0$ y $\sigma(r)=\sigma(s)=\sigma(v)=1$, que cumple $\sigma(\varphi)=0$ contradicción. 
+        \end{enumerate}
+    \end{enumerate}
+    En todos los casos llegamos a una contradicción, por lo que $\sigma(\varphi)=\sigma(\psi)$ para toda valuación $\sigma$, como queríamos.
+\item \begin{claim} $(a \leftrightarrow b)\equiv (a \land b)\lor (\neg a \land \neg b)$.
+\end{claim}
+\begin{dem}
+    Usaremos tabla de verdad: 
+\bigskip
+\begin{center}
+\begin{tabular}{cccccc}
+$a$ & $b$ & $a \land b$ & $\neg a \land \neg b$ & $(a \land b)\lor (\neg a \land \neg b)$ & $a \leftrightarrow b$\\
+\midrule
+0 & 0 & 0 & 1 & 1 & 1\\
+0 & 1 & 0 & 0 & 0 & 0\\
+1 & 0 & 0 & 0 & 0 & 0\\
+1 & 1 & 1 & 0 & 1 & 1\\
+\end{tabular}
+\end{center}
+Se concluye ya que ambas columnas son idénticas.
+\end{dem}
+
+Definiendo el siguiente $\psi$ y trabajando:
+\[
+\psi:=\left(\bigvee_{i=1}^n(p_i \land q_i)\right) \lor \left(\bigvee_{i=1}^n(\neg p_i \land \neg q_i)\right) \equiv \bigvee_{i=1}^n((p_i \land q_i)\lor (\neg p_i \land \neg q_i) ) \stackrel{\text{Afirmación}}{\equiv} \bigvee_{i=1}^n (p_i\leftrightarrow q_i)= \varphi
+\]
+Como $\psi$ está claramente en DNF, podemos concluír que dicho $\psi$ sirve.
+\end{enumerate}

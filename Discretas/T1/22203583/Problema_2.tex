@@ -1,0 +1,14 @@
+Usaremos inducción estructural
+\begin{CB}
+    Tomamos el árbol $\bullet$. Este elemento cumple lo pedido ya que $\lvert \bullet \rvert=1\leq 2^{0+1}-1=2^{h(\bullet)+1}-1$
+\end{CB}
+\begin{HI}
+    Supongamos que los áboles $t_1$ y $t_2$ satisfacen $\lvert t_1\rvert \leq 2^{1+h(t_1)}-1$ y $\lvert t_2\rvert \leq 2^{1+h(t_2)}-1$
+\end{HI}
+\begin{TI}
+    Para poder concluír por inducción, basta demostrar que la desigualdad del enunciado se satisface para $t=\bullet(t_1,t_2)$. Digamos sin pérdida de generalidad que $h(t_1)\geq h(t_2)$, por lo que $h(t)=1+h(t_1)$. Tenemos:
+    \[
+    \lvert t \rvert = 1 +\lvert t_1\rvert+\lvert t_2 \rvert \stackrel{HI}{\leq} 2^{h(t_1)+1}+2^{h(t_2)+1}-1\leq 2\cdot 2^{h(t_1)+1}-1 = 2^{h(t)+1}-1
+    \]
+    Por lo que la desigualdad pedida se cumple para el árbol $t$. Concluímos por inducción estructural.
+\end{TI}

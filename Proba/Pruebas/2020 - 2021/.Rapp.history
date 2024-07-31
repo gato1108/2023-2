@@ -1,0 +1,681 @@
+library(mvtnorm)
+######################
+## Script clase 20 ###
+######################
+#
+l.w = log(2000)#
+l.f = log(20)#
+l.e = log(1.6)#
+z.w = sqrt(log(1+0.2^2))#
+z.f = sqrt(log(1+0.15^2))#
+z.e = sqrt(log(1+0.125^2))#
+mu = l.w+l.f-0.5*l.e#
+sigma = sqrt(z.w^2+z.f^2+(-0.5)^2*z.e^2)#
+1-plnorm(35000, meanlog = mu, sdlog = sigma)
+(-0.5)^2
+##################################################
+## Test de Comparación de Poblaciones Normales ###
+##################################################
+#
+## Librerias#
+library(fitdistrplus)  ## Estimación de momentos y MV#
+library(TeachingDemos) ## z.test()#
+library(dplyr)         ## filter() [filtrar]#
+#
+## Aplicación#
+Base = rio::import("ENS_muestra.xlsx")#
+head(Base)
+sigma = 9#
+X = filter(Base, REGION == 1)$TALLA#
+n = length(X)#
+Y = filter(Base, REGION == 4)$TALLA#
+m = length(Y)
+n
+m
+z.test(x = mean(X)-mean(Y), mu = 0, stdev = sigma*sqrt(1/n+1/m), alternative = "less")$p.value
+sigma.X = 30.1#
+sigma.Y = 26.6#
+X = filter(Base, SEXO == 1)$GLUBASAL ## SEXO == 1 (HOMBRES)#
+n = length(X)#
+Y = filter(Base, SEXO == 2)$GLUBASAL ## SEXO == 2 (MUJERES)#
+m = length(Y)
+n
+m
+z.test(x = mean(X)-mean(Y), mu = delta0, stdev = sqrt(sigma.X^2/n+sigma.Y^2/m), alternative = "greater")$p.value
+delta0 = 4#
+#
+## H0: mu.x - mu.y = delta0 vs Ha: mu.x - mu.y > delta0, con delta0 = 4#
+## Ha: > (alternative = "greater")#
+z.test(x = mean(X)-mean(Y), mu = delta0, stdev = sqrt(sigma.X^2/n+sigma.Y^2/m), alternative = "greater")$p.value
+z.test(x = mean(X)-mean(Y), mu = delta0, stdev = sqrt(sigma.X^2/n+sigma.Y^2/m), alternative = "greater")
+X = filter(Base, SEXO == 1, ZONA == 1)$CINTURA#
+Y = filter(Base, SEXO == 1, ZONA == 2)$CINTURA
+var.test(x = X, y = Y, alternative = "two.sided")$p.value
+F0 = var(X)/var(Y)
+F0
+2*(1-pf(F0))
+F0 = var(X)/var(Y)#
+n = length(X)#
+m = length(Y)#
+2*(1-pf(F0, df1 = n-1,df = m-1))
+t.test(x = X, y = Y, var.equal = T, alternative = "two.sided")$p.value
+X = filter(Base, SEXO == 1, ZONA == 1)$COLES#
+Y = filter(Base, SEXO == 1, ZONA == 2)$COLES#
+var.test(x = X, y = Y, alternative = "two.sided")$p.value
+t.test(x = X, y = Y, var.equal = F, mu = 0, alternative = "two.sided")$p.value
+X = filter(Base, ZONA == 1)$FUMADOR#
+n = length(X)#
+Y = filter(Base, ZONA == 2)$FUMADOR#
+m = length(Y)#
+## Estimador de p bajo H0#
+p = (n*mean(X)+m*mean(Y))/(n+m)#
+#
+z.test(x = mean(X)-mean(Y), stdev = sqrt(p*(1-p))*sqrt(1/n+1/m), alternative = "greater")$p.value
+prop.test(x = c(sum(X), sum(Y)), n = c(n,m), correct = F, alternative = "greater")$p.value
+Base = rio::import("ENS_muestra.xlsx")#
+head(Base)
+X <- Base$HDL
+hist(X, freq = F, col = "gray", border = "white")
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,10,20))
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,20))
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,25))
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,10))
+xp <- sort(X) ## Función sort() ordena de menor a mayor un vector
+xp
+p <- 1:N/(N+1)
+xp <- sort(X) ## Función sort() ordena de menor a mayor un vector#
+N <- length(X) ## Tamaño de la muestra (o largo del vector)#
+p <- 1:N/(N+1)
+p
+## Graficos de Probabilidad ###
+xp <- sort(X) ## Función sort() ordena de menor a mayor un vector#
+N  <- length(X) ## Tamaño de la muestra (o largo del vector)#
+p  <- 1:N/(N+1)#
+zp <- qnorm(p) #
+plot(xp ~ zp, type = "p", pch = 20, bty = "n")
+plot(xp ~ zp, type = "p", pch = 20, bty = "n", las = 1)#
+abline(lm(xp ~ zp))
+plot(xp ~ zp, type = "p", pch = 20, bty = "n", las = 1, col = "gray")#
+abline(lm(xp ~ zp), lwd = 2)
+qqnorm(X, col = "gray", pch = 20)
+qqline(X, lwd = 2)
+plot(log(xp) ~ zp, type = "p", pch = 20, bty = "n", las = 1, col = "gray")#
+abline(lm(log(xp) ~ zp), lwd = 2)
+lm(xp ~ zp)$coef
+mu = lm(xp ~ zp)$coef[1]#
+sigma = lm(xp ~ zp)$coef[2]#
+lambda = lm(log(xp) ~ zp)$coef[1]#
+zeta = lm(log(xp) ~ zp)$coef[2]
+ecdf
+Fn <- ecdf() ## Genera una función de la acumulada empirica
+Fn <- ecdf(X) ## Genera una función de la acumulada empirica
+plot(Fn(xp)~xp, type = "s")
+lines(pnorm(xp, mu, sigma)~xp, col = "blue")
+lines(plnorm(xp, lambda, zeta)~xp, col = "red")
+plot(Fn(xp)~xp, type = "s", col = "gray", lwd = 2)#
+lines(pnorm(xp, mu, sigma)~xp, col = "blue", lwd = 2)#
+lines(plnorm(xp, lambda, zeta)~xp, col = "red", lwd = 2)
+lm(xp ~ zp)
+lm(xp ~ zp)$coef
+lm(xp ~ zp)$coef[1]
+lm(xp ~ zp)$coef[2]
+Fn(xp)
+abs(Fn(xp)-pnorm(xp, mu, sigma))
+max(abs(Fn(xp)-pnorm(xp, mu, sigma)))
+d <- max(abs(Fn(xp)-pnorm(xp, mu, sigma)))
+d
+ks.test(X, "pnorm", mean = mu, sd = sigma)
+warnig
+warning
+?warning
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))
+d <- max(abs(Fn(xp)-pnorm(xp, mu, sigma)))#
+d
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))$statistic
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))$p.value
+d <- max(abs(Fn(xp)-plnorm(xp, lambda, zeta)))#
+d
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$statistic#
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$p.value
+d <- max(abs(Fn(xp)-plnorm(xp, lambda, zeta)))#
+d
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$statistic
+d <- max(abs(Fn(xp)-plnorm(xp, meanlog = lambda, sdlog = zeta)))
+d
+Fn(xp)
+lambda
+zeta
+xp
+d <- max(abs(Fn(xp)-plnorm(xp, meanlog = lambda, sdlog = zeta)))#
+d
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$statistic
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$statistic#
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$p.value
+fitdistrplus::fitdist(data = X, distr = "norm", method = "mle")$estimate
+mu = fitdistrplus::fitdist(data = X, distr = "norm", method = "mle")$estimate[1]#
+sigma = fitdistrplus::fitdist(data = X, distr = "norm", method = "mle")$estimate[2]#
+#
+d <- max(abs(Fn(xp)-pnorm(xp, mu, sigma)))#
+d
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))$statistic#
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))$p.value
+lambda = fitdistrplus::fitdist(data = X, distr = "lnorm", method = "mle")$estimate[1]#
+zeta = fitdistrplus::fitdist(data = X, distr = "lnorm", method = "mle")$estimate[2]
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$statistic#
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$p.value
+d <- max(abs(Fn(xp)-plnorm(xp, meanlog = lambda, sdlog = zeta)))#
+d
+k = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[1]#
+nu = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[2]
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$statistic#
+suppressWarnings(ks.test(X, "plnorm", shape = k, rate = nu))$p.value
+k = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[1]#
+nu = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[2]
+nu
+k
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$statistic
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$p.value
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))$p.value
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$p.value
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$p.value
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,10))
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,20))
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,25))
+cut(X, seq(0,100,25))
+tabl(cut(X, seq(0,100,25)))
+table(cut(X, seq(0,100,25)))
+table(cut(X, c(0,40,50,70,100)))
+pgamma(c(0,40,50,70,Inf), shape = k, rate = nu)
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))
+p
+sum(p)
+n <- sum(O)
+O <- table(cut(X, c(0,40,50,70,100)))#
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))#
+n <- sum(O)
+n
+pgamma(c(0,40,50,70,Inf), shape = k, rate = nu)
+diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))
+E <- n*p
+M <- cbind(O,p,E)
+M
+(O-E)^2/E
+X2
+X2 <- sum((O-E)^2/E)#
+X2
+k <- length(=)
+k <- length(O)
+k
+curve(dchisq(x, df = k-1-2), from = 0, to = 5, n = 1000)
+curve(dchisq(x, df = k-1-2), from = X2, to = 5, n = 1000, type = "h", col = "red", add = T)
+1-pchisq(X2, df = k-1-2)
+######################
+## Script Clase 34 ###
+######################
+#
+Base = rio::import("ENS_muestra.xlsx")#
+head(Base)#
+X <- Base$HDL#
+#
+## Histograma ###
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,10))#
+#
+## HDL ~ Normal?#
+#
+## Graficos de Probabilidad ###
+xp <- sort(X) ## Función sort() ordena de menor a mayor un vector#
+N  <- length(X) ## Tamaño de la muestra (o largo del vector)#
+p  <- 1:N/(N+1)#
+zp <- qnorm(p) #
+plot(xp ~ zp, type = "p", pch = 20, bty = "n", las = 1, col = "gray")#
+abline(lm(xp ~ zp), lwd = 2)#
+#
+## En R este grafico se obtiene con la función qqnorm#
+qqnorm(X, col = "gray", pch = 20)#
+qqline(X, lwd = 2)#
+#
+## HDL ~ Log-Normal?#
+plot(log(xp) ~ zp, type = "p", pch = 20, bty = "n", las = 1, col = "gray")#
+abline(lm(log(xp) ~ zp), lwd = 2)#
+#
+## Obtengamos los parametros Normal y Log-Normal a partir de la recta#
+mu = lm(xp ~ zp)$coef[1]#
+sigma = lm(xp ~ zp)$coef[2]#
+lambda = lm(log(xp) ~ zp)$coef[1]#
+zeta = lm(log(xp) ~ zp)$coef[2]#
+#
+## Acumulada Empirica vs Acumuladas Teoricas Estimadas#
+Fn <- ecdf(X) ## Genera una función de la acumulada empirica#
+plot(Fn(xp)~xp, type = "s", col = "gray", lwd = 2)#
+lines(pnorm(xp, mu, sigma)~xp, col = "blue", lwd = 2)#
+lines(plnorm(xp, lambda, zeta)~xp, col = "red", lwd = 2)#
+#
+##################################
+## Test de Bondad de Ajuste KS ###
+##################################
+#
+## Utilicemos fitdist#
+mu = fitdistrplus::fitdist(data = X, distr = "norm", method = "mle")$estimate[1]#
+sigma = fitdistrplus::fitdist(data = X, distr = "norm", method = "mle")$estimate[2]#
+#
+d <- max(abs(Fn(xp)-pnorm(xp, mu, sigma)))#
+d#
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))$statistic#
+suppressWarnings(ks.test(X, "pnorm", mean = mu, sd = sigma))$p.value#
+#
+lambda = fitdistrplus::fitdist(data = X, distr = "lnorm", method = "mle")$estimate[1]#
+zeta = fitdistrplus::fitdist(data = X, distr = "lnorm", method = "mle")$estimate[2]#
+#
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$statistic#
+suppressWarnings(ks.test(X, "plnorm", meanlog = lambda, sdlog = zeta))$p.value#
+#
+k = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[1]#
+nu = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[2]#
+#
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$statistic#
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$p.value#
+## Mayor valor-p --> Mejor Ajuste --> Entre una Normal, Gamma y Log-Normal#
+## Escogemos Log-Normal#
+#####################################
+## Test de Bondad de Ajuste Chi-2 ###
+#####################################
+#
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,25))#
+#
+O <- table(cut(X, c(0,40,50,70,100)))#
+k <- length(O)#
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))#
+n <- sum(O)#
+E <- n*p#
+M <- cbind(O,p,E)#
+X2 <- sum((O-E)^2/E)#
+X2 ## X2 ~ chi2(k-1-2), k = 4#
+curve(dchisq(x, df = k-1-2), from = 0, to = 5, n = 1000)#
+curve(dchisq(x, df = k-1-2), from = X2, to = 5, n = 1000, type = "h", col = "red", add = T)#
+1-pchisq(X2, df = k-1-2)
+k = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[1]#
+nu = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[2]
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$statistic#
+suppressWarnings(ks.test(X, "pgamma", shape = k, rate = nu))$p.value
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,25))#
+#
+O <- table(cut(X, c(0,40,50,70,100)))#
+k <- length(O)#
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))#
+n <- sum(O)#
+E <- n*p#
+M <- cbind(O,p,E)#
+X2 <- sum((O-E)^2/E)#
+X2 ## X2 ~ chi2(k-1-2), k = 4#
+curve(dchisq(x, df = k-1-2), from = 0, to = 5, n = 1000)#
+curve(dchisq(x, df = k-1-2), from = X2, to = 5, n = 1000, type = "h", col = "red", add = T)
+curve(dchisq(x, df = k-1-2), from = 0, to = 5, n = 1000)
+curve(dchisq(x, df = k-1-2), from = X2, to = 5, n = 1000, type = "h", col = "red", add = T)
+X2
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,25))
+O <- table(cut(X, c(0,40,50,70,100)))
+k <- length(O)
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))
+n <- sum(O)
+E <- n*p
+E
+O <- table(cut(X, c(0,40,50,70,100)))
+O
+k <- length(O)
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))
+p
+k = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[1]#
+nu = fitdistrplus::fitdist(data = X, distr = "gamma", method = "mle")$estimate[2]
+k
+nu
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))
+p
+K <- length(O)
+hist(X, freq = F, col = "gray", border = "white", breaks = seq(0,100,25))#
+#
+O <- table(cut(X, c(0,40,50,70,100)))#
+K <- length(O)#
+p <- diff(pgamma(c(0,40,50,70,Inf), shape = k, rate = nu))#
+n <- sum(O)#
+E <- n*p#
+M <- cbind(O,p,E)#
+X2 <- sum((O-E)^2/E)#
+X2 ## X2 ~ chi2(K-1-2), K = 4#
+curve(dchisq(x, df = K-1-2), from = 0, to = 5, n = 1000)#
+curve(dchisq(x, df = K-1-2), from = X2, to = 5, n = 1000, type = "h", col = "red", add = T)#
+1-pchisq(X2, df = K-1-2)
+chisq.test
+chisq.test(x = O, p = p)$statistic
+X2 ## X2 ~ chi2(K-1-2), K = 4
+chisq.test(x = O, p = p)$p.value
+X2 <- chisq.test(x = O, p = p)$statistic
+X2
+######################
+## Script Clase 30 ###
+######################
+#
+library(fitdistrplus)  ## fitdist() para estimación M.V.#
+library(TeachingDemos) ## z.test() y sigma.test()#
+library(dplyr)         ## filter()#
+Base = rio::import("ENS_muestra.xlsx")#
+head(Base)#
+dim(Base) ## 251 registros y 20 variables#
+#
+## (1) ¿Existe evidencia que apoye la siguiente afirmación: #
+## "Menos del 40% de la población es Hipertensa"? #
+## Utilice un nivel de significancia del 5% (alpha).#
+#
+## p: Proporción de hipertensos en la población #
+#
+## H0: p = p0 vs Ha: p < p0, com p0 = 0.40#
+#
+## Basado en la ditribución asintótica Normal(0,1) del pivote#
+Y = Base$HTA#
+n = length(Y)#
+hat.p = mean(Y) ## Observo evidencia puntual que apoya Ha#
+fitdistrplus::fitdist(data = Y, distr = "binom", method = "mle", fix.arg = list(size = 1), start = list(prob = 1/2))$estimate#
+#
+p0 = 0.4#
+Z0 = (hat.p - p0)/sqrt(p0*(1-p0)/n)#
+Z0#
+## Si Ha: < (less)#
+valor.p = pnorm(Z0) #
+valor.p #
+## Como valor-p >= alpha --> No existe suficiente evidencia #
+## para rechazara H0. Es decir, pese a que puntualmente teniamos un 36.7% #
+## vs el 40% de referencia, esta diferencia de 3.3% no fue suficiente para nuestros #
+## nivel de riesgo (significancia) y por eso NO RECHAZAMOS H0#
+#
+# ## ¿Como calcular de valor p cuando Ha cambia de dirección?:#
+# ## Si Ha: > (greater)#
+# valor.p = 1-pnorm(Z0) #
+# valor.p#
+# ## Si Ha: != (two.sided)#
+# valor.p = 2*(1-pnorm(abs(Z0)))#
+# valor.p#
+#
+## Usando funciones de R:#
+## prop.test(): Basado en el número de exitos#
+prop.test(x = sum(Y), n = n, p = p0, alternative = "less", correct = F)$p.value#
+## Estadistico de Prueba que es distinto a Z0 por que es otro el pivote utilizado#
+prop.test(x = sum(Y), n = n, p = p0, alternative = "less", correct = F)$statistic#
+## sum(Y): número de exitos#
+## n: número de esperimentos Bernoulli#
+#
+## z.test(): Ingresando los datos y la desviasión estándar de los datos evaluada en p0#
+z.test(x = Y, mu = p0, stdev = sqrt(p0*(1-p0)), alternative = "less")$p.value#
+z.test(x = Y, mu = p0, stdev = sqrt(p0*(1-p0)), alternative = "less")$statistic#
+#
+## z.test(): Ingresando el estimador y la raiz de la CCR evaluada en pi0#
+z.test(x = hat.p, mu = p0, stdev = sqrt(p0*(1-p0)/n), alternative = "less")$p.value#
+z.test(x = hat.p, mu = p0, stdev = sqrt(p0*(1-p0)/n), alternative = "less")$statistic#
+#
+## Como el valor-p > alpha --> No existe suficiente evidencia para#
+## rechazar H0 y apoyar Ha, es decir, la diferencia que puntualmente #
+## apoyaba a Ha resulto no ser estadisticamente significativa (no fue sufciente evidencia)#
+#
+## (2) ¿Existe evidencia que apoye la siguiente afirmación: #
+## "Más de la mitad de la poblacion tiene riesgo de SM #
+## por que su circunferencia de cintura supera los 88 cm"? #
+## Asuma Normalidad y un nivel de significancia del 1%.#
+#
+## Mediana = Moda = Esperanza = mu#
+#
+## H0: mu = mu0 vs Ha: mu > mu0, com mu0 = 88#
+#
+Y = Base$CINTURA#
+n = length(Y)#
+hat.mu = mean(Y)#
+## ¿Conocemos la varianza? NO ---> La estimamos con S = sd(Y)#
+S = sd(Y) #
+mu0 = 88#
+#
+## Basado en la ditribución exacta t-Student(n-1) del pivote#
+T0 = (hat.mu-mu0)/sqrt(S^2/n)#
+T0#
+## Como Ha: >#
+valor.p = 1-pt(T0, df = n-1)#
+valor.p #
+## Como el valor-p < alpha = 1% --> Existe suficiente evidencia#
+## para rechazar H0 y apoyar Ha, es decir, más de la mitad #
+## tiene riesgo de SM.#
+#
+## t.test(): Ingresando los datos#
+t.test(x = Y, mu = mu0, alternative = "greater")$p.value#
+t.test(x = Y, mu = mu0, alternative = "greater")$statistic#
+#
+## (3) ¿Existe evidencia que apoye la siguiente afirmación: #
+## "La variabilidad de la Talla es distinta a 80 cm^2"? #
+## Asuma Normalidad y un nivel de significancia del 10%.#
+#
+Y = Base$TALLA#
+n = length(Y)#
+## ¿Conocemos sigma? NO#
+S = sd(Y)#
+#
+## H0: sigma^2 = sigma0^2 vs Ha: sigma^2 != sigma0^2, #
+## con sigma0^2 = 80 cm^2#
+sigma0 = sqrt(80)#
+#
+## Basado en la distribución chi-cuadrado(n-1) del pivote#
+C0 = (n-1)*S^2/sigma0^2#
+(n-1)#
+## Valor-p dependerá si C0 > (n-1) o C0 < (n-1)#
+2*(1-pchisq(C0, df = n-1)) ## Si C0 > (n-1)#
+# 2*(pchisq(C0, df = n-1)) ## Si C0 < (n-1)#
+#
+## sigma.test(): Ingresando datos#
+sigma.test(x = Y, sigma = sigma0, alternative = "two.sided")$p.value#
+sigma.test(x = Y, sigma = sigma0, alternative = "two.sided")$statistic#
+## Como el valor-p < alpha = 10% --> Existe suficiente evidencia #
+## para rechazar H0 y apoyar Ha, es decir, #
+## la varianza difiere de 80 cm^2#
+#
+## (4) Ejemplo simulado#
+## X ~ Exp(nu) con nu = 0.9 (Tiempo en horas que toma contestas una prueba)#
+set.seed(201)#
+nu = 0.9#
+X = rexp(100, rate = nu)#
+#
+## Existe evidencia para apoyar que a la mayoría de los alumnos #
+## le toma más de 45 min (0.75 horas) responder la prueba#
+hat.nu = fitdist(X, dist = "exp", method = "mle")$estimate[1]#
+#
+## H0:   Mediana = 0.75 vs Ha: Mediana > 0.75#
+## H0: log(2)/nu = 0.75 vs Ha: log(2)/nu > 0.75#
+## H0: nu = log(2)/0.75 vs Ha: nu < log(2)/0.75#
+nu0 = log(2)/0.75#
+## La función z.test nos pide el EMV, el nu0 y #
+## la raíz de la CCR evaluada en nu0#
+z.test(x = hat.nu, mu = nu0, stdev = sqrt(nu0^2/n), alternative = "less")$p.value#
+z.test(x = hat.nu, mu = nu0, stdev = sqrt(nu0^2/n), alternative = "less")$statistic#
+#
+## A mano?#
+Z0 = (hat.nu - nu0)/sqrt(nu0^2/n)#
+## H1: <#
+valor.p = pnorm(Z0)#
+valor.p#
+#
+## Como 20.9% = valor.p > alpha = 5% --> No existe suficiente #
+## evidencia para rechazar H0 y apoyar Ha. #
+## Por lo tanto no podemos afirmar#
+## que a la mayoria le tomará mas de 45 min hacer la prueba,.
+Base = rio::import("BC.xlsx")#
+head(Base)#
+dim(Base)#
+summary(Base)
+Base = rio::import("BC.xlsx")#
+head(Base)#
+dim(Base)#
+summary(Base)
+plot(ImacecMinero ~ Date, data = Base, type = "l", las = 1, bty = "n")
+plot(ImacecMinero ~ Pib, data = Base, pch = 20, bty = "n", las = 1, ylim = c(50,150))#
+## La función lm() nos entrega la recta de regresión
+plot(ImacecMinero ~ Pib, data = Base, pch = 20, bty = "n", las = 1, ylim = c(50,150))#
+## La función lm() nos entrega la recta de regresión#
+modelo1 = lm(ImacecMinero ~ Pib, data = Base)#
+abline(modelo1, col = "red", lwd = 2)#
+abline(h = mean(Base$ImacecMinero), lty = 2, col = "blue", lwd = 2)
+summary(modelo1)
+summary(modelo1)
+plot(ImacecMinero ~ PrecioCobre, data = Base, pch = 20, bty = "n", las = 1, ylim = c(50,150))#
+modelo2 = lm(ImacecMinero ~ PrecioCobre, data = Base)#
+abline(modelo2, col = "red", lwd = 2) ## Rojo = Recta de Regresión#
+abline(h = mean(Base$ImacecMinero), lty = 2, col = "blue", lwd = 2) ## Azul = Promedio#
+## Visuzlmente son muy parecidas --> b1 = 0
+summary(modelo2) ## Valor-p de b1 = 94.9% > 5% ---> No rechazo H0: b1 = 0
+summary(modelo1)
+Fanova = summary(modelo1)$fstatistic[1] ## F = 34.55#
+n = dim(Base)[1]#
+1-pf(Fanova, df1 = 1, df2 = n-1-1)
+Tpendiente = summary(modelo1)$coef[2,3]
+2*(1-pt(abs(Tpendiente), df = n-1-1))
+cbind(Tpendiente^2, Fanova) ## Por esta razón los valores-p son identicos
+summary(modelo2)
+modelo2$coef[2]*10000 ## Por cada 100 dolares de lb cobres el IMACEC MINERO decrece 4.36 puntos (NO SIGNIFICATIVO)
+summary(modelo2)$r.squared ## R2 = 0% de variabilidad explicada
+summary(modelo2)$adj.r.squared ## r2 = -0.05% de variabilidad explicada (DA NEGATIVO, por el factor (n-1)/(n-2))
+Fanova = summary(modelo2)$fstatistic[1] ## F = 0.004026297
+1-pf(Fanova, df1 = 1, df2 = n-1-1) ## Area bajo la curva desde F0 hasta Inf
+Tpendiente = summary(modelo2)$coef[2,3]
+2*(1-pt(abs(Tpendiente), df = n-1-1))
+modelo3 = lm(ImacecMinero ~ Pib + PrecioCobre, data = Base)#
+summary(modelo3)
+summary(modelo3)
+2^20
+summary(modelo3)
+plot(modelo3$fitted.values ~ Base$ImacecMinero)#
+Base$fitted = NA#
+Base$fitted = modelo3$fitted.values#
+#
+plot(ImacecMinero ~ Date,data = Base, type = "l")#
+lines(fitted ~ Date, data = Base, col = "red", lwd = 2) ## El plano de regresión en el timepo
+## Como podemos mejorar esto? Agregagando un efecto MES#
+modelo4 = lm(ImacecMinero ~ Pib + PrecioCobre + factor(Month), data = Base)#
+summary(modelo4) ## R2 = 64.77%#
+plot(modelo4$fitted.values ~ Base$ImacecMinero)#
+Base$fitted = modelo4$fitted.values#
+plot(ImacecMinero ~ Date,data = Base, type = "l")#
+lines(fitted ~ Date, data = Base, col = "red")
+summary(modelo4)
+Z = modelo4$residuals
+X = sort(Z)#
+Fn = ecdf(X)#
+x = X#
+plot(Fn(x)~x, type = "s", bty = "n", main = "Acumulada Empírica", font.main = 1, las = 1)#
+lines(pnorm(x, mean = mean(Z), sd = sd(Z))~x, lty = 2)#
+legend("topleft", c("Acumulada Empirica", "Acumulada Normal"), lty = 1:2, bty = "n", cex = 1.5)
+ks.test(scale(Z), "pnorm")$p.value ## >= 5% = alpha --> No rechazamos la Normalidad.
+library(TeachingDemos)
+mu0 = 5.0#
+n = 60-25#
+hat.mu = 4.7#
+s = 1.2#
+T0 = (hat.mu-mu0)/(s/sqrt(n))#
+c(T0, pt(T0,df = n-1))
+p = 0.33#
+omega = 0.04#
+confianza = 0.88#
+alpha = 1-confianza#
+n = trunc((qnorm(1-alpha/2)*sqrt(p*(1-p))/omega)^2)+1#
+n
+c(prop.test(x = c(32, 21), n = c(72, 62), correct = F, alternative = "two.sided")$statistic,#
+prop.test(x = c(32, 21), n = c(72, 62), correct = F, alternative = "two.sided")$p.value)
+p = (32+21)/(72+62)#
+Z0 = c(32/72-21/62)/(sqrt(p*(1-p))*sqrt(1/72+1/62))#
+c(Z0,2*(1-pnorm(abs(Z0))))
+c(z.test(x = 32/72-21/62, stdev = (sqrt(p*(1-p))*sqrt(1/72+1/62)))$statistic,#
+z.test(x = 32/72-21/62, stdev = (sqrt(p*(1-p))*sqrt(1/72+1/62)))$p.value)
+setwd("/Users/raolea/Library/CloudStorage/Dropbox/EYP1113/2023 - 00/Pautas Historicas/2020 - 2021")
+library(readxl)#
+Base = as.data.frame(read_excel("Salario_I4.xlsx"))
+X = Base$Experiencia
+X
+c(t.test(x = X, mu = 8, alternative = "less")$statistic,#
+t.test(x = X, mu = 8, alternative = "less")$p.value)
+library(readxl)#
+library(dplyr)#
+Base = as.data.frame(read_excel("Salario_I4.xlsx"))#
+X = filter(Base, Genero == "MASCULINO")$Ingreso#
+Y = filter(Base, Genero == "FEMENINO")$Ingreso
+var.test(x = X, y = Y, alternative = "two.sided")$p.value
+c(t.test(x = X, y = Y, alternative = "greater", var.equal = T)$statistic,#
+t.test(x = X, y = Y, alternative = "greater", var.equal = T)$p.value)
+library(readxl)#
+Base = as.data.frame(read_excel("Salario_I4.xlsx"))#
+modelo1 = lm(Ingreso ~ Experiencia, data = Base)#
+modelo2 = lm(Ingreso ~ Experiencia + I(Experiencia^2) + Genero, data = Base)#
+anova(modelo1,modelo2)
+sumamry(modelo1)
+Base = as.data.frame(read_excel("Salario_I4.xlsx"))#
+modelo1 = lm(Ingreso ~ Experiencia, data = Base)#
+modelo2 = lm(Ingreso ~ Experiencia + I(Experiencia^2) + Genero, data = Base)#
+sumamry(modelo1)
+summary(modelo1)
+summary(modelo2)
+anova(modelo1,modelo2)
+library(TeachingDemos)#
+library(rio)#
+library(dplyr)
+library(TeachingDemos)#
+library(rio)#
+library(dplyr)
+#############################
+## I4 - 2021 - 00 (Pauta) ###
+#############################
+#
+library(TeachingDemos)#
+library(rio)#
+library(dplyr)#
+###################
+## Pregunta 1.1 ###
+###################
+#
+## H0: p = p0 vs Ha: p > p0#
+p0 = 1/3#
+n = 60#
+X = 25#
+hat.p = X/n#
+#
+c(z.test(x = hat.p, mu = p0, stdev = sqrt(p0*(1-p0)/n), alternative = "greater")$statistic,#
+z.test(x = hat.p, mu = p0, stdev = sqrt(p0*(1-p0)/n), alternative = "greater")$p.value)#
+#
+c(prop.test(x = X, n = n, p = p0, correct = F, alternative = "greater")$statistic,#
+prop.test(x = X, n = n, p = p0, correct = F, alternative = "greater")$p.value)#
+#
+Z0 = (hat.p-p0)/sqrt(p0*(1-p0)/n)#
+c(Z0,1-pnorm(Z0))#
+#
+## +0.5 por Z0#
+## +0.3 por valor-p#
+## +0.2 por conclusión: NO
+## Ejemplo#
+p = 0.39#
+omega = 0.05#
+confianza = 0.91#
+alpha = 1-confianza#
+n = trunc((qnorm(1-alpha/2)*sqrt(p*(1-p))/omega)^2)+1#
+n
+Base = as.data.frame(rio::import("Salario_I4.xlsx"))#
+X = Base$Experiencia
+c(t.test(x = X, mu = 8, alternative = "less")$statistic,#
+t.test(x = X, mu = 8, alternative = "less")$p.value)
+Base = as.data.frame(rio::import("Salario_I4.xlsx"))#
+X = dplyr::filter(Base, Genero == "MASCULINO")$Ingreso#
+Y = dplyr::filter(Base, Genero == "FEMENINO")$Ingreso
+var.test(x = X, y = Y, alternative = "two.sided")$p.value#
+c(t.test(x = X, y = Y, alternative = "greater", var.equal = T)$statistic,#
+t.test(x = X, y = Y, alternative = "greater", var.equal = T)$p.value)
+c(t.test(x = X, y = Y, alternative = "greater", var.equal = F)$statistic,#
+t.test(x = X, y = Y, alternative = "greater", var.equal = F)$p.value)#
+#
+## +0.3 por estadistico incorrecto#
+## +0.3 por valor-p#
+## +0.2 por conclusión: NO
+Base = as.data.frame(rio::import("Salario_I4.xlsx"))#
+modelo1 = lm(Ingreso ~ Experiencia, data = Base)#
+modelo2 = lm(Ingreso ~ Experiencia + I(Experiencia^2) + Genero, data = Base)#
+summary(modelo1)#
+summary(modelo2)
+anova(modelo1,modelo2)

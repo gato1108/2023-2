@@ -1,0 +1,19 @@
+\begin{claim}
+        Dados $a,b$ enteros con $MCD(a,b)=d$, entonces existen $x,y$ coprimos tales que $a=xd$ y $b=yd$.
+\end{claim}
+    
+\begin{dem}
+        Como $d$ divide a $a$ y $b$, entonces existen $x,y$ con $a=xd$ y $b=yd$, por lo que basta demostrar que son coprimos. Supongamos $MCD(x,y)=z>1$. Sea $d'=dz$, como $z|x$ , entonces $d'=dz|dx=a$ y similarmente $d'|b$. Pero $d'=dz>d$, que contradice que $d$ era el $MCD$ de $a$ y $b$. Sigue que $z=1$ como queríamos.
+\end{dem}
+\begin{enumerate}[label=(\alph*)] 
+\item Tomamos $x$ e $y$ coprimos con $k=xd$ y $m=yd$. Por enunciado, existe $l$ entero con $lyd=lm=k(a-b)=xd(a-b)\implies ly=x(a-b)$. Como $l$ es entero, $y|(a-b)x$ y dada la coprimidad de $x$ e $y$, se conlucye $y|a-b$. Esto es equivalente a $a\equiv b \mod(y)$ que era lo que queríamos demostrar.
+\item Sea $x,y$ coprimos con $a=dx$ y $m=dy$
+
+$\boxed{\Longrightarrow}$ Si la congruencia tiene una solución $t$, entonces $dy=m|at-b=dxt-b$, como $d|dy$ se obtiene que $d|dxt-b$ y como $d|dxt$, se concluye que $d|b$
+
+$\boxed{\Longleftarrow}$ Si $d|b$, entonces existe un $z$ entero tal que $dz=b$. Como $MCD(x,y)=1$, entonces existe un $t$ tal que $y|xt-1$, por lo que $y|xt'-z$ para $t'=zt$. Se tiene \[
+\frac{xt'-z}{y}\in \mathbb{Z} \implies \frac{dxt'-dz}{dy}=\frac{at'-b}{m}\in \mathbb{Z}\implies at' \equiv b \mod m
+\]
+Por lo que la congruencia lineal tiene solución.
+
+\end{enumerate}

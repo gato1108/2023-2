@@ -1,0 +1,33 @@
+\begin{enumerate}[label=(\alph*)]
+\item Sea $P(n)=2!\cdot 4! \cdot \cdots \cdot (2n)!$ y $Q(n)=((n+1)!)^n$. Usaremos principio de inducción para demostrar $P(n)\geq Q(n)$ para todo $n\geq 1$. 
+\begin{CB}
+    Sea $n=1$, este $n$ cumple ya que $P(1)=Q(1)=2$.
+\end{CB}
+\begin{HI}
+    Supongamos que $n\in \mathbb{N}$ satisface $P(n)\geq Q(n)$.
+\end{HI}
+\begin{TI}
+    Se tiene: 
+    \[
+    P(n+1)=P(n)\cdot (2n+2)!\stackrel{HI}{\geq} Q(n)\cdot (2n+2)! = Q(n)\cdot (n+1)!\prod_{k=n+2}^{2n+2}k\geq Q(n)\cdot (n+1)!\cdot (n+2)^{n+1}
+    \]
+    Donde el último término es $Q(n+1)$ ya que \[
+    Q(n)\cdot (n+1)!\cdot (n+2)^{n+1}=((n+1)!)^{n+1}\cdot (n+2)^{n+1} = ((n+2)!)^{n+1}=Q(n+1)
+    \]
+    Se concluye por inducción lo pedido.
+\end{TI}
+\item Nuevamente usaremos inducción.
+\begin{CB}
+    Tomamos $n=0$ y $n=1$, que claramente cumplen ya que $s_0=5^0-1$ y $s_1=5^1-1$.
+\end{CB}
+\begin{HI}
+    Supongamos que $n\in \mathbb{N}$ satisface $s_n=5^n-1$ y $s_{n-1}=5^{n-1}-1$.
+\end{HI}
+\begin{TI}
+    se tiene:
+    \[
+    s_{n+1}=6s_n-5s_{n-1}=6\cdot5^n-6-5\cdot5^{n-1}+5=5^{n+1}-1
+    \]
+    Por lo que $n+1$ tambien cumple la propiedad pedida. Se concluye por inducción.
+\end{TI}
+\end{enumerate}

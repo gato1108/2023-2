@@ -1,0 +1,20 @@
+\begin{enumerate}[label=(\alph*)]
+    \item Supongamos por contradicción que existe un vértice $t\in V$ tal que $\deg(t)\neq 2$. Por la condición del enunciado, se tiene $\deg(t)\geq 3$ y $\deg(v)\geq 2$ para todo $v\in V$. Se usa la identidad vista en clases:
+    \[
+    2|E|=\sum_{v\in V}\deg(v)=\deg(t)+\sum_{v\in V/\{t\}}\deg(v)\geq 3+\sum_{v\in V/\{t\}}2=2|V|+1
+    \]
+    Lo que es imposible ya que $|E|=|V|$. Sigue que $\deg(v)=2$ para todo $v\in V$.
+    \item En primer lugar, dado $v=(b_1,b_2,\cdots,b_n)\in V_n$, los vértices adyacentes a $v$ por enunciado son exactamente $(1-b_1,b_2,\cdots,b_n)$, $(b_1,1-b_2,\cdots,b_n)\cdots (b_1,b_2,\cdots,1-b_n)$, por lo que todo vértice $v\in V_n$ cumple $\deg(v)=n$.
+
+    Además, dado un par $x,y\in V_n$ con $x=(x_1,\cdots,x_n)$ e $y=(y_1,\cdots,y_n)$, la secuencia de nodos adyacentes:
+    \begin{align*}
+        x = &(x_1,x_2\cdots,x_n)\\
+        &(y_1,x_2\cdots,x_n)\\
+        &(y_1,y_2\cdots,x_n)\\
+        &\quad \quad \quad \vdots \\
+        &(y_1,y_2\cdots,y_n)=y
+    \end{align*}
+    Muestra que $G_n$ es conexo para todo $n$. (posiblemente la lista contiene vértices iguales, pero en tal caso solo se trabaja con el primero de estos que aparece en la lista).
+
+    Por lo visto en clases, sigue que $G_n$ es Euleriano si y solo si $\deg(v)=n$ es par para todo $v\in V_n$. Sigue que $G_n$ es Euleriano si y solo si $n$ es par.
+\end{enumerate}

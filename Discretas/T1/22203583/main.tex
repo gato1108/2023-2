@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+
+
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{authoraftertitle}
+\date{23 de Agosto 2023}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[none]{hyphenat}
+\usepackage{parskip}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{15.2pt}
+\setlength{\headsep}{5pt}
+\pagestyle{fancy}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Exp}[1]{\mathcal{E}_{#1}}
+\newcommand{\List}[1]{\mathcal{L}_{#1}}
+\newcommand{\EN}{\Exp{\N}}
+\newcommand{\LN}{\List{\N}}
+
+\newcommand{\comment}[1]{}
+\newcommand{\lb}{\\~\\}
+\newcommand{\eop}{_{\square}}
+\newcommand{\hsig}{\hat{\sigma}}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\lra}{\leftrightarrow}
+
+\newenvironment{CB}[1]{\par\noindent\underline{\textbf{CB:}}\space#1}{}
+\newenvironment{HI}[1]{\par\noindent\underline{\textbf{HI:}}\space#1}{}
+\newenvironment{TI}[1]{\par\noindent\underline{\textbf{TI:}}\space#1}{\hfill $\blacksquare$}
+
+\newcommand{\alumno}{Diego Pérez - 22203583}
+\rhead{Tarea 1 - \alumno}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{minipage}{2.3cm}
+\includegraphics[width=2cm]{logo.pdf}
+\vspace{0.5cm}
+\end{minipage}
+\begin{minipage}{\linewidth}
+\textsc{\raggedright \footnotesize
+Pontificia Universidad Católica de Chile \\
+Departamento de Ciencia de la Computación \\
+IIC1253 - Matemáticas Discretas \\}
+\end{minipage}
+
+
+
+\begin{center}
+\vspace{0.5cm}
+{\huge\bf Tarea 1}\\
+\vspace{0.2cm}
+\MyDate\\
+\vspace{0.2cm}
+\footnotesize{2º semestre 2023 - Profesores G. Diéguez - S. Bugedo - N. Alvarado - B. Barías}\\
+\vspace{0.2cm}
+\footnotesize{\alumno}
+\rule{\textwidth}{0.05mm}
+\end{center}
+
+
+
+\section*{Problema 1}
+
+\input{Problema_1}
+\newpage
+
+\section*{Problema 2}
+\input{Problema_2}
+
+\end{document}

@@ -1,0 +1,43 @@
+\begin{enumerate}
+\item  Demostraremos que la siguiente interpretación:
+\begin{align*}
+    \mathcal{I}(Dom):&=\mathbb{Q}\\
+    \mathcal{I}(<):&=\text{ Uso común dado a $<$}\\
+    \mathcal{I}(=):&=\text{ Uso común dado a $=$}\\
+\end{align*}
+satisface $\Sigma_2$ y particularmente, satisface $\Sigma_1$. Para hacerlo, basta verificar que $\mathcal{I}\models \alpha_i$ para todo $i$.
+\begin{itemize}
+    \item $\boxed{\alpha_1}$ sigue de que $x=x$.
+    \item $\boxed{\alpha_2}$ sigue de la transitividad de $<$.
+    \item $\boxed{\alpha_3}$ sigue de que $\mathbb{Q}$ admite un orden.
+    \item $\boxed{\alpha_4}$ basta tomar $y=x+1\in \mathbb{Q}$.
+    \item $\boxed{\alpha_5}$ basta tomar $y=x-1\in \mathbb{Q}$.
+    \item $\boxed{\alpha_6}$ basta tomar $z=\frac{x+y}{2}\in \mathbb{Q}$.
+\end{itemize}
+\newpage
+\item 
+\begin{enumerate}[label=\alph*)]
+\item $\forall x(P(x)\to \neg Q(x))$ o equivalentemente, $\forall x(\neg P(x)\lor \neg Q(x))$.
+\item $\forall x(R(x)\to \neg S(x))$ o equivalentemente, $\forall x(\neg R(x)\lor \neg S(x))$.
+\item $\forall x(\neg Q(x)\to S(x))$ o equivalentemente, $\forall x(Q(x)\lor S(x))$.
+\item $\forall x(P(x)\to \neg R(x))$ o equivalentemente, $\forall x(\neg P(x)\lor \neg R(x))$.
+\item \boxed{\text{Respuesta:} \textbf{ Si lo implica.}} Demostraremos que el conjunto 
+\[
+\Sigma =
+\{\forall x(\neg P(x)\lor \neg Q(x)),\forall x(\neg R(x)\lor \neg S(x)),\forall x(Q(x)\lor S(x)),\neg (\forall x(\neg P(x)\lor \neg R(x)))\}
+\]
+es inconsistente, lo que implicará lo pedido. Para hacerlo, demostraremos $\Sigma \models \square$. 
+\begin{align*}
+    &(1) & \forall x(&\neg P(x)\lor \neg Q(x)) &&\in  \Sigma \\
+    &(2) & &\neg P(a)\lor \neg Q(a)& &\text{especificación universal} \\
+    &(3) & \forall x(&\neg R(x)\lor \neg S(x)) &&\in  \Sigma \\
+    &(4) & &\neg R(a)\lor \neg S(a)& &\text{especificación universal} \\
+    &(5) & \forall x(&Q(x)\lor S(x)) &&\in  \Sigma \\
+    &(6) & &Q(a)\lor S(a)& &\text{especificación universal}\\
+    &(7) & \neg &P(a)\lor \neg R(a)& &\text{resolución (2), (4), (6)} \\
+    &(8) &  \neg (\neg &P(a)\lor \neg R(a)) &&\in  \Sigma \text{ y especificación universal}\\
+    &(9) & & \square& &\text{resolución  (7) y (8)}
+\end{align*}
+Como queríamos.
+\end{enumerate}
+\end{enumerate}

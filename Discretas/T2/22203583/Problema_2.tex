@@ -1,0 +1,44 @@
+\begin{enumerate}
+    \item \underline{Respuesta: \textbf{No}} 
+    
+    Demostraremos que de hecho, $\{W,\neg\}$ no es funcionalmente completo, que implicará la respuesta.
+
+    Sea $P=\{p\}$. Usaremos inducción estructural para demostrar que toda fórmula en $L(P)$ (construída usando $\{W,\neg\}$) es lógicamente equivalente a $p$ o $\neg p$. Como $p\land \neg p \not\equiv \neg p$ y $p\land \neg p \not\equiv p$, esto es suficiente.
+    \begin{CB}
+        Tomamos $p$, que trivialmente cumple $p\equiv p$.
+    \end{CB}
+    \begin{HI}
+        Supongamos que $\alpha, \beta,\gamma\in L(p)$ son todas equivalentes a $p$ o $\neg p$ y están construíadas solo usando $W, p$ y $\neg$.
+    \end{HI}
+    \begin{TI}
+        Tenemos que demostrar que cualquier fórmula $\varphi$ generada con $\alpha, \beta,\gamma$ es equivalente a $p$ o $\neg p$. Por simetría, tenemos 3 casos:
+        \begin{enumerate}
+            \item \boxed{\varphi= \alpha} Es directo ya que $\alpha \equiv p$ o $\alpha \equiv \neg p$ por HI.
+            \item \boxed{\varphi=\neg \alpha} Es directo ya que $\alpha \equiv p$ o $\alpha \equiv \neg p$ por HI.
+            \item \boxed{\varphi=W(\alpha,\beta,\gamma)} Por palomar, hay 2 fórmulas de $\{\alpha,\beta,\gamma\}$ (digamos $\alpha$ y $\beta$) que son equivalentes. Analizamos la tabla de verdad:
+\begin{center}
+\begin{tabular}{ccc}
+$\alpha$ & $\gamma$ & $W(\alpha,\alpha,\gamma)$ \\
+\midrule
+0 & 0 & 0 \\
+0 & 1 & 0 \\
+1 & 0 & 1 \\
+1 & 1 & 1 \\
+\end{tabular}
+\end{center}
+Luego, $W(\alpha,\beta,\gamma)\equiv \alpha$ y por HI, $W(\alpha,\beta,\gamma)\equiv p$ o $\neg p$, como queríamos. Concluímos por inducción.
+        \end{enumerate}
+    \end{TI}
+    
+    \item A lo largo de este ejercicio, consideramos $P=\{p,q\}$ con $p$ y $q$ variables.
+    \begin{enumerate}
+        \item \boxed{\textbf{Falso}} Consideramos $\Sigma_1=\{q\}$ y $\alpha=\beta=p$. Claramente $\beta \models \alpha$, por lo que $(\Sigma_1\cup\{\beta\})\models \alpha$ pero $\Sigma_1\not\models \alpha$.
+        \item \boxed{\textbf{Verdadero}} Supongamos por contradicción, que $\Sigma_1\models \alpha$ y $\Sigma_2\models \beta$ y que existe una valuación $\sigma$ tal que $\sigma (\Sigma_1\cup \Sigma_2)=1$ y $\sigma(\alpha \land \beta)=0$. De la última ecuación, obtenemos que al menos uno de $\sigma(\alpha)$ o $\sigma(\beta)$ es 0, digamos sin pérdida de generalidad que $\sigma(\alpha)=0$. Como $\Sigma_1\models \alpha$, sigue que $\sigma(\Sigma_1)=0$, por lo que $\sigma (\Sigma_1\cup \Sigma_2)=0$, pero habíamos asumido que $\sigma (\Sigma_1\cup \Sigma_2)=1$. Concluímos por contradicción.
+        \item \boxed{\textbf{Falso}} Sea $\Sigma_1 = \{p\}$ y $\alpha=q$. Claramente $\Sigma_1 \not\models \alpha$ pero $\Sigma_1 \not\models \neg\alpha$.
+        \item \boxed{\textbf{Verdadero}} 
+        
+        \underline{$\Longrightarrow$} Supongamos por contradicción que $\Sigma_1 \models \alpha \to \beta$ y que existe una valuación $\sigma$ tal que $\sigma(\Sigma_1 \cup \{\alpha\})=1$ y $\sigma(\beta)=0$. Como $\sigma(\Sigma_1)=1$ y $\Sigma_1 \models \alpha \to \beta$, tenemos que $\sigma(\alpha \to \beta)=1$. Sin embargo, esto es una contradicción ya que $\sigma(\alpha)=1$ y $\sigma(\beta)=0$. Concluímos por contradicción.
+
+        \underline{$\Longleftarrow$} Supongamos por contradicción que $\Sigma_1 \cup \{\alpha\}\models \beta$ y que existe una valuación $\sigma$ tal que $\sigma(\Sigma_1)=1$ y $\sigma(\alpha \to \beta)=0$. Con esta última igualdad obtenemos que $\sigma(\alpha)=1$ y $\sigma(\beta)=0$. Sin embargo, la existencia de esta valuación contradice que $\Sigma_1 \cup \{\alpha\}\models \beta$. Concluímos por inducción.
+    \end{enumerate}
+\end{enumerate}

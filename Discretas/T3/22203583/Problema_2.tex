@@ -1,0 +1,17 @@
+\begin{enumerate}[label=\alph*)]
+    \item Por definición de $\mathcal{T}(A)$, este conjunto contiene los subconjuntos $X$ de $A$ tales que $A\setminus X$ es finito, junto con el elemento $\varnothing$.  Sigue que $\varnothing$ es un elemento de $\mathcal{T}(A)$.
+    \item Por definición de  $\mathcal{T}(A)$, basta verificar que $A\setminus A$ es finito, pero esto se desprende de $A\setminus A=\varnothing$. Sigue que $A\in \mathcal{T}(A)$
+    \item \begin{claim}
+    Sea $M(A)=\bigcup \mathcal{T}(A)$, entonces, para cada conjunto $A$, $M(A)=A$.
+    \end{claim}
+    \begin{dem}
+    Notar que si $A$ tiene 1 elemento o es el conjunto vacio, entonces la proposición se cumple trivialmente, por lo que supongamos que $A$ tiene al menos 2 elementos. Para cada elemento $x$ de $A$, sea $A_x=A\setminus \{x\}$. Primero, como $A\setminus A_x=\{x\}$ finito y $A_x\subseteq A$, tenemos que $A_x\in\mathcal{T}(A)$. Supongamos que existe un $a\in A$ tal que $a\notin M(A)$, entonces, por definición de $M$, $a\notin T$ para cualquier elemento $T$ de $\mathcal{T}(A)$. Sin embargo, $a\in A_b$ para $a\neq b$ ($b$ existe ya que $A$ tiene al menos 2 elementos) y  $A_b\subseteq A$, contradicción. Sigue que $A\subseteq M(A)$.
+    
+    Por otro lado, todo elemento $X$ de $\mathcal{T}(A)$ cumple $X\in \mathcal{P}(A)$, por lo que $X\subseteq A$, implicando $M(A)\subseteq A$. Como $A\subseteq M(A)$, se concluye que $A=M(A)$.
+    \end{dem}
+    
+    Por (b), tenemos que $M(A)=A\in \mathcal{T}(A)$.
+   \item 
+    Sea $N=\bigcap \mathcal{X}$. Primero, si $X$ es un elemento de $\mathcal{X}$, entonces $X \in \mathcal{P}(A)$, por lo que $X\subseteq A$. Esto implica que $N\subseteq A$ y $N\in \mathcal{P}(A)$. Queda demostrar que $A\setminus N$ es finito. Supongamos por contradicción que $A\setminus N$ es infinito, luego, existe una secuencia infinita de $x_0,x_1,\cdots$ de elementos de $A$ tales que $x_i\in A$ pero $x_i \not\in S$ para algún $S\in \mathcal{X}$ y para todo $i\geq 0$. Como $\mathcal{X}$ tiene una cantidad finita de elementos, existe un $S\in\mathcal{X}$ y una subsecuencia infinita de $\{x_i\}$ (llamemosla $\{y_i\}$) con $y_i\in A$ pero $y_i\notin S$. Luego, $A \setminus S$ es infinito, lo que contradice $S\in \mathcal{T}(A)$. Sigue que $A\setminus N$ es finito, por lo que $N\in \mathcal{T}(A)$.
+    
+\end{enumerate}
